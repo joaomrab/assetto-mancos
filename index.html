@@ -112,7 +112,7 @@
         </h2>
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-xs text-amber-400 bg-amber-950/40 border border-amber-800/50 px-3 py-1 rounded-full w-fit">
-            ⚠️ Mínimo: 5 voltas totais e 3 voltas na corrida
+            ⚠️ Ranking: mínimo de 3 voltas válidas acumuladas
           </span>
           <div class="flex items-center gap-2">
             <label for="raceCountFilterSelect" class="text-[10px] uppercase font-semibold text-slate-400 shrink-0">Corridas</label>
@@ -704,7 +704,7 @@
               totalLaps: 0,
               lapTimes: [],
               sessions: new Set(),
-              hasValidSession: false
+              hasValidSession: false // Indicador de consistência: 3 voltas válidas na mesma corrida; não restringe o ranking
             };
           }
         });
@@ -780,7 +780,7 @@
       sortedDriversGlobal = activeDriversGlobal
         .filter(driverName => {
           const stats = driversMap[driverName];
-          return stats.totalLaps >= 5 && stats.hasValidSession;
+          return stats.totalLaps >= 3;
         })
         .sort((a, b) => driversMap[a].bestLap - driversMap[b].bestLap);
 
@@ -801,7 +801,7 @@
       leaderboardBody.innerHTML = '';
 
       if (sortedDriversGlobal.length === 0) {
-        leaderboardBody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-500">Nenhum manco qualificado para esta pista (exige ≥ 5 voltas totais e ≥ 3 voltas na mesma sessão).</td></tr>`;
+        leaderboardBody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-500">Nenhum manco qualificado para esta pista (exige ≥ 3 voltas válidas acumuladas).</td></tr>`;
         return;
       }
 
